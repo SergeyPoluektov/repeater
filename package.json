@@ -1,0 +1,14 @@
+{
+  "name": "repeater",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node ./repeater"
+  },
+  "dependencies": {
+    "mongoose": "~4.4.19",
+    "nconf": "~0.8.4",
+    "winston": "~2.2.0",
+    "crc": "~3.4.0"
+  }
+}
