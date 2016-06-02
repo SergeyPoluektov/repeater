@@ -11,3 +11,6 @@ Terminal.find({}, function(err) {
 });
 
 new Server();
+
+let WebApp = require('./webApp');
+new WebApp().createServer();

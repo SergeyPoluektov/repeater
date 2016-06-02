@@ -4,5 +4,6 @@
   "remotePort": 20419,
   "mongoose": {
     "uri": "mongodb://127.0.0.1/repeater"
-  }
+  },
+  "webPort": 80
 }
