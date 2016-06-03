@@ -3,8 +3,7 @@
  */
 let mongoose = require('libs/mongoose'),
     Schema = mongoose.Schema;
-let TerminalEmulatorsPool = require('terminalEmulatorsPool');
-let pool = new TerminalEmulatorsPool();
+let pubsub = require('libs/pubsub');
 
 let elemSchema = new Schema({
     elemType: Buffer,
@@ -18,12 +17,8 @@ let terminalSchema = new Schema({
     elem: [elemSchema]
 });
 
-terminalSchema.post('init', function (term) {
-    pool.add(term);
-});
-
 terminalSchema.post('save', function (term) {
-    pool.add(term);
+    pubsub.emit('saveTerminal', term);
 });
 
 exports.Terminal = mongoose.model('Terminal', terminalSchema);

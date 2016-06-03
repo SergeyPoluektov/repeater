@@ -10,8 +10,17 @@ class TerminalEmulatorsPool {
     }
 
     add(dbTerm) {
-        if (this._pool.has(dbTerm)) {
-            let termEmu = this._pool.get(dbTerm);
+        let isTermInPool = false;
+        let foundedKey = null;
+        for (let term of this._pool.keys()) {
+            if (term._id.id === dbTerm._id.id) {
+                isTermInPool = true;
+                foundedKey = term;
+                break;
+            }
+        }
+        if (isTermInPool) {
+            let termEmu = this._pool.get(foundedKey);
             termEmu._term = dbTerm;
             log.info('Terminal emulator ' + termEmu._termId + ' data is updated...');
         }
