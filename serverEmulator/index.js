@@ -9,6 +9,7 @@ let magicNums = require('libs/magicNums');
 let Codec = require('libs/codecOmnicomm');
 let TerminalCache = require('./terminalCache');
 let Terminal = require('models/terminal').Terminal;
+let pubsub = require('libs/pubsub'); //emit event to webApp
 
 class ServerEmulator {
     constructor() {
@@ -127,6 +128,12 @@ class ServerEmulator {
             i += (elemLen + 5); //5 is 1 byte of element type and 4 bytes of element ID
 
             this._elemsCount++;
+
+            pubsub.emit('rxElemData', {
+                termId: this._getNumFromSeq(term.terminalId),
+                rxElemCount: this._elemsCount
+            });
+
         }
     }
 

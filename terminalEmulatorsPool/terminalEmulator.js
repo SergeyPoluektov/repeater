@@ -8,6 +8,7 @@ let crc = require('crc');
 let Codec = require('libs/codecOmnicomm');
 let magicNums = require('libs/magicNums');
 let timeConst = require('libs/timeConstants');
+let pubsub = require('libs/pubsub');  //emit event to webApp
 
 class TerminalEmulator {
     constructor(dbTerm) {
@@ -95,6 +96,11 @@ class TerminalEmulator {
                         }
                         dataContainer = Buffer.concat([dataContainer, elemDataContainer]);
                         this._elemIndex = i + 1;
+
+                        pubsub.emit('txElemData', {
+                            termId: this._termId,
+                            txElemCount: this._elemIndex
+                        });
                     }
                     //send last packet with elements
                     this._sendData(magicNums.DATA_SEQ_CMD.CODE_FOR_SERVER, dataContainer);

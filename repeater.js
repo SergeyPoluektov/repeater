@@ -5,9 +5,14 @@ let Server = require('serverEmulator');
 let Terminal = require('models/terminal').Terminal;
 let log = require('libs/log')(module);
 let pubsub = require('libs/pubsub');
+let WebApp = require('./webApp');
 let TerminalEmulatorsPool = require('terminalEmulatorsPool');
 
 let pool = new TerminalEmulatorsPool();
+
+new Server();
+let webApp = new WebApp();
+webApp.createServer();
 
 //use this query for fill terminals pool if they are exists in DB
 Terminal.find({}, function(err, terminals) {
@@ -20,8 +25,3 @@ Terminal.find({}, function(err, terminals) {
 pubsub.on('saveTerminal', (term) => {
     pool.add(term);
 });
-
-new Server();
-
-let WebApp = require('./webApp');
-new WebApp().createServer();
