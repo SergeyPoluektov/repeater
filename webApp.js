@@ -41,8 +41,8 @@ class WebApp {
         let data = {};
         data.termId = term.terminalId[3] << 24 | term.terminalId[2] << 16 |
             term.terminalId[1] << 8 | term.terminalId[0];
-        data.rxCount = term.elem.length;
-        data.txCount = 0;
+        data.rxElemCount = term.elem.length;
+        data.txElemCount = 0;
         if (this._socket) {
             this._socket.emit('addToTable', data);
         }

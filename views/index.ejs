@@ -39,14 +39,21 @@
         }
 
         _addTerminal(data) {
-            let row = document.createElement('tr');
-            row.insertAdjacentHTML('afterBegin', `
-                <td>${data.termId}</td><td>${data.rxCount}</td><td>${data.txCount}</td>
-            `);
-            row.id = 'id' + data.termId;
-
             this._tableBody = this._parentElem.children[0].tBodies[0];
-            this._tableBody.appendChild(row);
+            let tagId = 'id' + data.termId;
+            let row = this._tableBody.querySelector('#' + tagId);
+            if (!row) {
+                row = document.createElement('tr');
+                row.insertAdjacentHTML('afterBegin', `
+                    <td>${data.termId}</td><td>${data.rxElemCount}</td><td>${data.txElemCount}</td>
+                `);
+                row.id = 'id' + data.termId;
+                this._tableBody.appendChild(row);
+            }
+            else {
+                row.cells[1].textContent = data.rxElemCount;
+                row.cells[2].textContent = data.txElemCount;
+            }
         }
 
         _updateRxCount(data) {
