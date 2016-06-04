@@ -25,16 +25,30 @@ class WebApp {
 
         this._app.use('/', routes);
 
+        this._updateRxCount = this._updateRxCount.bind(this);
+        this._updateTxCount = this._updateTxCount.bind(this);
+        this._updateRxCountDel = this._updateRxCountDel.bind(this);
         pubsub.on('rxElemData', this._updateRxCount);
         pubsub.on('txElemData', this._updateTxCount);
+        pubsub.on('rxElemDataDel', this._updateRxCountDel);
+    }
+
+    _updateRxCountDel(data) {
+        if (this._socket) {
+            this._socket.emit('updateRxCountDel', data);
+        }
     }
 
     _updateRxCount(data) {
-        this._socket.emit('updateRxCount', data);
+        if (this._socket) {
+            this._socket.emit('updateRxCount', data);
+        }
     }
 
     _updateTxCount(data) {
-        this._socket.emit('updateTxCount', data);
+        if (this._socket) {
+            this._socket.emit('updateTxCount', data);
+        }
     }
 
     _addRowToTable(term) {

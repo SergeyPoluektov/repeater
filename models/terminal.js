@@ -3,7 +3,7 @@
  */
 let mongoose = require('libs/mongoose'),
     Schema = mongoose.Schema;
-let pubsub = require('libs/pubsub');
+let pubsub = require('libs/pubsub'); //emit event to repeater.js for terminal emulators pool
 
 let elemSchema = new Schema({
     elemType: Buffer,

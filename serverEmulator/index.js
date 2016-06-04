@@ -130,7 +130,7 @@ class ServerEmulator {
             this._elemsCount++;
 
             pubsub.emit('rxElemData', {
-                termId: this._getNumFromSeq(term.terminalId),
+                termId: this._getNumFromSeq(this._term.termId),
                 rxElemCount: this._elemsCount
             });
 

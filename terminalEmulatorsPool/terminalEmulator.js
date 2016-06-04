@@ -132,6 +132,11 @@ class TerminalEmulator {
                     }
 
                     deletedCount++;
+
+                    pubsub.emit('rxElemDataDel', {
+                        termId: this._termId,
+                        rxElemCount: 1
+                    });
                 }
                 log.info('Delete ' + deletedCount + ' elements from DB...');
 
