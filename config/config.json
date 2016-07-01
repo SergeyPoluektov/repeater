@@ -1,0 +1,9 @@
+{
+  "localPort": 8111,
+  "remoteHost": "193.193.165.165",
+  "remotePort": 20419,
+  "mongoose": {
+    "uri": "mongodb://127.0.0.1/repeater"
+  },
+  "webPort": 80
+}
