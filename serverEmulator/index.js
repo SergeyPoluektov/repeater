@@ -30,6 +30,7 @@ class ServerEmulator {
 
     _createServer(socket) {
         log.info('connection established...');
+
         this._socket = socket;
         this._socket.on('end', function () {
             log.info('client disconnected');
@@ -71,6 +72,13 @@ class ServerEmulator {
                 this._term = new TerminalCache(termId, fwVers);
                 this._elemsCount = 0;
                 this._packCount = 0;
+
+                pubsub.emit('connectionStatus', {
+                    termId: this._getNumFromSeq(termId),
+                    connectionStatus: 'Подключен',
+                    rxElemCount: 0,
+                    txElemCount: 0
+                });
             }
             else if (this._lastCmd === magicNums.CONFIRM_DEL_ELEM_CMD.CODE) {
                 log.info('Received: ' + this._packCount + ' packets...');
@@ -110,6 +118,10 @@ class ServerEmulator {
                 log.info('Save data from terminal: ' + context._getNumFromSeq(term.terminalId) + ' to db...');
             });
             context._socket.end();
+            pubsub.emit('connectionStatus', {
+                termId: context._getNumFromSeq(context._term.termId),
+                connectionStatus: 'Отключен'
+            });
         });
     }
 

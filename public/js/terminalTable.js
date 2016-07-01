@@ -9,15 +9,17 @@ class TerminalTable {
         this._updateRxCount = this._updateRxCount.bind(this);
         this._updateTxCount = this._updateTxCount.bind(this);
         this._updateRxCountDel = this._updateRxCountDel.bind(this);
+        this._updateConnectionStatus = this._updateConnectionStatus.bind(this);
 
         this._render();
 
-        this._socket = io('http://192.168.2.250');
+        this._socket = io();
 
         this._socket.on('addToTable', this._addTerminal);
         this._socket.on('updateRxCount', this._updateRxCount);
         this._socket.on('updateTxCount', this._updateTxCount);
         this._socket.on('updateRxCountDel', this._updateRxCountDel);
+        this._socket.on('updateConnectionStatus', this._updateConnectionStatus);
     }
 
     _render() {
@@ -26,8 +28,9 @@ class TerminalTable {
                     <thead>
                     <tr>
                         <th>ID терминала</th>
+                        <th>Статус подключения</th>
                         <th>Записано пакетов</th>
-                        <th>Передано пакетов на сервер при последнем сеансе</th>
+                        <th>Передано пакетов на сервер при текущем сеансе</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,14 +46,14 @@ class TerminalTable {
         if (!row) {
             row = document.createElement('tr');
             row.insertAdjacentHTML('afterBegin', `
-                    <td>${data.termId}</td><td>${data.rxElemCount}</td><td>${data.txElemCount}</td>
+                    </td><td>${data.termId}</td><td>Отключен</td><td>${data.rxElemCount}</td><td>${data.txElemCount}</td>
                 `);
             row.id = 'id' + data.termId;
             this._tableBody.appendChild(row);
         }
         else {
-            row.cells[1].textContent = data.rxElemCount;
-            row.cells[2].textContent = data.txElemCount;
+            row.cells[2].textContent = data.rxElemCount;
+            row.cells[3].textContent = data.txElemCount;
         }
     }
 
@@ -58,7 +61,7 @@ class TerminalTable {
         let tagId = 'id' + data.termId;
         let row = this._tableBody.querySelector('#' + tagId);
         if (row) {
-            row.cells[1].textContent -= data.rxElemCount;
+            row.cells[2].textContent -= data.rxElemCount;
         }
     }
 
@@ -66,7 +69,7 @@ class TerminalTable {
         let tagId = 'id' + data.termId;
         let row = this._tableBody.querySelector('#' + tagId);
         if (row) {
-            row.cells[1].textContent = data.rxElemCount;
+            row.cells[2].textContent = data.rxElemCount;
         }
     }
 
@@ -74,7 +77,24 @@ class TerminalTable {
         let tagId = 'id' + data.termId;
         let row = this._tableBody.querySelector('#' + tagId);
         if (row) {
-            row.cells[2].textContent = data.txElemCount;
+            row.cells[3].textContent = data.txElemCount;
+        }
+    }
+
+    _updateConnectionStatus(data) {
+        this._tableBody = this._parentElem.children[0].tBodies[0];
+        let tagId = 'id' + data.termId;
+        let row = this._tableBody.querySelector('#' + tagId);
+        if (row) {
+            row.cells[1].textContent = data.connectionStatus;
+        }
+        else {
+            row = document.createElement('tr');
+            row.insertAdjacentHTML('afterBegin', `
+                    </td><td>${data.termId}</td><td>${data.connectionStatus}</td><td>${data.rxElemCount}</td><td>${data.txElemCount}</td>
+                `);
+            row.id = 'id' + data.termId;
+            this._tableBody.appendChild(row);
         }
     }
 }

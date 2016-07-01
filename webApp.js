@@ -28,9 +28,11 @@ class WebApp {
         this._updateRxCount = this._updateRxCount.bind(this);
         this._updateTxCount = this._updateTxCount.bind(this);
         this._updateRxCountDel = this._updateRxCountDel.bind(this);
+        this._updateConnectionStatus = this._updateConnectionStatus.bind(this);
         pubsub.on('rxElemData', this._updateRxCount);
         pubsub.on('txElemData', this._updateTxCount);
         pubsub.on('rxElemDataDel', this._updateRxCountDel);
+        pubsub.on('connectionStatus', this._updateConnectionStatus);
     }
 
     _updateRxCountDel(data) {
@@ -48,6 +50,12 @@ class WebApp {
     _updateTxCount(data) {
         if (this._socket) {
             this._socket.emit('updateTxCount', data);
+        }
+    }
+
+    _updateConnectionStatus(data) {
+        if (this._socket) {
+            this._socket.emit('updateConnectionStatus', data);
         }
     }
 
