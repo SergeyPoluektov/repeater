@@ -1,6 +1,6 @@
 # repeater
 Repeater used in vehicle and fuel monitoring systems.<br/>
-Contains 2 parts:<br/>
+Contains 3 parts:<br/>
 1. Server emulator.<br/>
 2. Pool of terminal emulators.<br/>
 3. Web app.
